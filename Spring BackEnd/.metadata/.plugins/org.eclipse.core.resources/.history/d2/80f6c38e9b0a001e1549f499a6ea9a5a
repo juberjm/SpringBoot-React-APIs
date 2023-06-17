@@ -1,0 +1,37 @@
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entities.Course;
+import com.example.demo.services.CourseServise;
+
+@RestController
+public class MyController {
+	
+	@Autowired
+	public CourseServise courseService;
+	
+	
+//	@GetMapping("/hello")
+//	public String Home() {
+//		return "Hello zubair";
+//	}
+	
+	//get courses
+	@GetMapping("/courses")
+	public List <Course> GetCourses(){
+		
+			return this.courseService.getCources();
+		}
+	
+	@GetMapping("/courses/{CourseId}")
+	public Course GetCourse(@PathVariable String courseId) {
+		return this.courseService.getCourse(Long.parseLong(CourseId));;
+		
+	}
+}

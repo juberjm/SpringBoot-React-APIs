@@ -1,18 +1,41 @@
 import React, { useState, useEffect } from "react";
 import Course from "./Course"
 import { Button } from "reactstrap";
+import base_url from "../Api/BootApi";
+import axios from "axios"
+import {  toast } from 'react-toastify';
+
 const Allcourcees = () => {
     useEffect(() => {
         document.title="All courses || Zubair"
     }, [])
 
-    const [courses, setCources] = useState([
-        { title: "java course", description: "this is demo course for java" },
-        { title: "react course", description: "this is demo course for react" },
-        { title: "nodejs course", description: "this is demo course for nodejs" },
-        { title: "anguloar course", description: "this is demo course for angular" },
 
-    ])
+    const getAllCourcesFromServer=()=>{
+        axios.get(`${base_url}/courses`)
+        .then((response)=>{
+            console.log(response.data)
+
+            toast.success("course has been loaded",{
+                position:"bottom-center",
+            })
+            setCources(response.data)
+
+        },
+        (error)=>{
+            console.log(error)
+            toast.warning("something went wrong",{
+                position:"bottom-center",
+            })
+
+        })
+    }
+
+    useEffect(()=>{
+        getAllCourcesFromServer()
+    },[])
+
+    const [courses, setCources] = useState([])
 
     return (
         <div>
@@ -22,7 +45,7 @@ const Allcourcees = () => {
             <p>List of cources are as follows</p>
             {
                 courses.length > 0 ? courses.map((item) => (
-                    <Course Course={item} />
+                    <Course key={item.id} Course={item} />
                 )) : "no cources avillable"
             }
         </div>
